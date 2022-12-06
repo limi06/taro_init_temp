@@ -1,0 +1,15 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "taro_thin_temp_ts.3.4.9",
+  "description": "轻量taro模板",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": true,
+    "postcss": false,
+    "minified": false,
+    "es6": true,
+    "newFeature": true,
+    "bigPackageSizeSupport": true
+  },
+  "compileType": "miniprogram"
+}
