@@ -4,7 +4,10 @@ import { View } from '@tarojs/components';
 import { Loading, Empty, Button } from "@taroify/core";
 import { Replay } from '@taroify/icons'
 import classnames from 'classNames';
+// import NoDataImg from '@/static/image/no-data.png'
 import { protoString } from "../utils";
+import './index.scss'
+
 
 interface AsyncData {
   current_page: string | number
@@ -39,8 +42,9 @@ export function useGetNextList() {
       setLoading(true)
     }
     return asyncData().then((res: AsyncData | any[]) => {
+      Taro.hideLoading()
       if (page.current === 1) {
-        Taro.hideLoading()
+
       } else {
         setLoading(false)
       }
@@ -49,6 +53,11 @@ export function useGetNextList() {
       }
       if (Array.isArray(res)) {
         setList(res)
+        setNoData(true)
+        return
+      }
+      if(!res.data.length){
+        setList(res.data)
         setNoData(true)
         return
       }
@@ -69,7 +78,11 @@ export function useGetNextList() {
     setList([])
     return getListAction(asyncData)
   }
+  // 
   async function nextAction(asyncData?: () => Promise<any>) {
+    if(noData.current){
+      return
+    }
     if (loading.current) {
       return
     }
@@ -104,6 +117,7 @@ export function useGetNextList() {
       }
       {
         !list.current.length && <Empty style={emptyStyle || {}}>
+          {/* <Empty.Image src={emptySrc || NoDataImg} className={emptyImageClass || ' emptyImg'} /> */}
           <Empty.Image src={emptySrc} className={emptyImageClass} />
           <Empty.Description>
             <View className=' flex items-center justify-center'>

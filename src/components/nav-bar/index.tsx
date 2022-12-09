@@ -81,7 +81,7 @@ const Index: React.FC<Props> = ({ user, noBack, title, children, theme = 'black'
           {title || children}
         </View>
       </View>
-      {bgNode()}
+      {bgNode?.()}
     </View>
   )
 }

@@ -9,11 +9,12 @@
  * @FilePath: \taro-tsx-temp\src\pages\temp\index.tsx
  */
 import { inject, observer } from 'mobx-react'
-import { View, Button, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import React, { useCallback, useEffect } from 'react'
 import Taro, { useDidShow, usePullDownRefresh, useReachBottom, useReady, useRouter, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
 import useStateRef from 'react-usestateref'
 import { UserStore } from '@/types/store'
+import { Button } from '@taroify/core'
 import { getCurrentPageUrlWithArgs, watch } from '@/utils/index'
 import './index.scss'
 

@@ -162,9 +162,6 @@ export function getCurrentPageUrlWithArgs(params = {}) {
 
 // 转字符串
 export function decode(data) {
-  if (!data) {
-    return
-  }
   var toBinaryTable = [
     -1,
     -1,
@@ -326,7 +323,7 @@ export function decode(data) {
 
 // 检查对象键值对
 export function checkObj(obj, rules) {
-  for (const k in obj) {
+  for (const k in rules) {
     if (protoString(obj[k]) === '[object Object]' && JSON.stringify(obj[k]) === '{}') {
       Taro.showToast({
         title: rules[k],
@@ -490,3 +487,73 @@ export const selectorQueryClientRect = (
       })
       .exec()
   })
+
+// 文本中间替换为*  卢*
+export function textMidReplaceStar(str: string){
+  if(!str){
+    return ''
+  }
+  let len = str.length
+  if(len <= 2){
+    return `${str[0]}*`
+  }
+  return `${str[0]}*${str[len-1]}`
+}
+
+// 替换手机号*  157****4830
+export function replaceMobileStar(mobile){
+  if(!mobile){
+    return ''
+  }
+  mobile = String(mobile)
+  mobile = mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+  return mobile
+}
+
+export function wxWeappPay(res) {
+  return new Promise((resolve, reject) => {
+    Taro.requestPayment({
+      timeStamp: res.timeStamp, 
+      nonceStr: res.nonceStr, // 支付签名随机串，不长于 32 位
+      package: res.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+      signType: res.signType, // 微信支付V3的传入RSA,微信支付V2的传入格式与V2统一下单的签名格式保持一致
+      paySign: res.paySign, // 支付签名
+      success: (nres) => {
+        Taro.showToast({
+          title: '支付成功'
+        });
+        resolve(nres)
+      },
+      fail: (err) => {
+        reject(err)
+      }
+    });
+  })
+}
+
+export async function handleGetWxPhoneFn(e){
+  return new Promise((resolve, reject) => {
+    if (e.detail.encryptedData) {
+      $api.decryptData({
+        iv: e.detail.iv,
+        encryptedData: e.detail.encryptedData,
+        session_key: Taro.getStorageSync('base-login-info').session_key
+      }).then(async res => {
+        if (!res) {
+          return
+        }
+        await $api.saveUserInfo({
+          mobile: res
+        })
+        let data1 = await $api.getUserInfo()
+        if (data1) {
+          Taro.setStorageSync(StoreConfigNameCollect.userInfo, data1)
+          userStore.userInfo = data1
+        }
+        resolve(res)
+      })
+    } else {
+      reject('get phone cancel')
+    }
+  })
+}
