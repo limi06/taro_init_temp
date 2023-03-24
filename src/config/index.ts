@@ -15,7 +15,9 @@ export const CONSOLE_MONITOR_ENABLE = true // 监控记录打印
 //     ? 'https://palh.szhuitianxia.com'
 //     : 'https://palh.szhuitianxia.com'
 
-export const BASE_AJAX_URL = 'https://www.yinyuancf.com'
+// https://xqs.szhuitianxia.com
+// https://www.bianjiefeng.cn
+export const BASE_AJAX_URL = 'https://xqs.szhuitianxia.com'
 
 // axios 默认配置
 export const AXIOS_DEFAULT_CONFIG = {

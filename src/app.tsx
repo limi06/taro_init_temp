@@ -75,7 +75,7 @@ const App = ({ children }) => {
       wxMiniUpdate()
     }
     console.log(getCurrentInstance().router, 'getCurrentInstance().router')
-    // login(getCurrentInstance().router)
+    login(getCurrentInstance().router)
   }, [])
 
   useEffect(() => {
